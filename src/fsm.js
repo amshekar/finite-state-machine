@@ -1,21 +1,61 @@
+// const config = {
+//     initial: 'normal',
+//     states: {
+//         normal: {
+//             transitions: {
+//                 study: 'busy',
+//             }
+//         },
+//         busy: {
+//             transitions: {
+//                 get_tired: 'sleeping',
+//                 get_hungry: 'hungry',
+//             }
+//         },
+//         hungry: {
+//             transitions: {
+//                 eat: 'normal'
+//             },
+//         },
+//         sleeping: {
+//             transitions: {
+//                 get_hungry: 'hungry',
+//                 get_up: 'normal',
+//             },
+//         },
+//     }
+// };
 class FSM {
     /**
      * Creates new FSM instance.
      * @param config
      */
-    constructor(config) {}
+    constructor(config) {
+        this.states=config.states;
+        this.initial=config.initial;
+        this.active=null;
+        this.prev=null;
+        
+    }
 
     /**
      * Returns active state.
      * @returns {String}
      */
-    getState() {}
+    getState() {
+        this.active=this.initial;
+        return this.active;
+    }
 
     /**
      * Goes to specified state.
      * @param state
      */
-    changeState(state) {}
+    changeState(state) {
+      
+          this.initial = this.getState() === this.active ? state :  Error;
+        
+    }
 
     /**
      * Changes state according to event transition rules.
@@ -26,7 +66,9 @@ class FSM {
     /**
      * Resets FSM state to initial.
      */
-    reset() {}
+    reset() {
+        return this.initial;
+    }
 
     /**
      * Returns an array of states for which there are specified event transition rules.
@@ -34,21 +76,43 @@ class FSM {
      * @param event
      * @returns {Array}
      */
-    getStates(event) {}
+    getStates(event) {
+
+    }
 
     /**
      * Goes back to previous state.
      * Returns false if undo is not available.
      * @returns {Boolean}
      */
-    undo() {}
+    undo() {
+    if(this.prev===null)
+    { 
+        return false;
+    }
+    else{
+    this.active=this.prev;
+        }
+    }
 
     /**
      * Goes redo to state.
      * Returns false if redo is not available.
      * @returns {Boolean}
      */
-    redo() {}
+    redo() {
+
+
+        if(this.active===this.initial)
+    { 
+        return false;
+    }
+    else{
+    this.prev=this.prev;
+        }
+    }
+
+    
 
     /**
      * Clears transition history
